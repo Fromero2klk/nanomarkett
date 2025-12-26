@@ -1,0 +1,906 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NanoMarkET | Pet Store & Guardería (Goya, Madrid)</title>
+  <meta name="description" content="NanoMarkET: tienda y guardería para mascotas en Goya (Madrid). Catálogo, buscador, carrito, pagos y envíos." />
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#101a31;
+      --text:#e9efff;
+      --muted:#b8c3df;
+      --line:rgba(255,255,255,.12);
+      --accent:#7dd3fc;
+      --accent2:#a7f3d0;
+      --danger:#fb7185;
+      --radius:18px;
+      --shadow:0 22px 70px rgba(0,0,0,.45);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(900px 500px at 12% -10%, rgba(125,211,252,.20), transparent 60%),
+                  radial-gradient(800px 520px at 90% -15%, rgba(167,243,208,.16), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.45;
+    }
+    a{color:inherit}
+    .container{max-width:1100px;margin:0 auto;padding:0 18px}
+    .topbar{
+      position:sticky;top:0;z-index:30;
+      backdrop-filter: blur(10px);
+      background: rgba(11,18,32,.62);
+      border-bottom:1px solid var(--line);
+    }
+    .nav{
+      display:flex;align-items:center;gap:14px;
+      padding:12px 0;
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;
+      text-decoration:none;
+      min-width:240px;
+    }
+    .brand img{
+      width:44px;height:44px;
+      border-radius:14px;
+      object-fit:contain;
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      padding:6px;
+    }
+    .brand h1{font-size:16px;margin:0}
+    .brand p{margin:0;font-size:12px;color:var(--muted)}
+    .links{
+      display:flex;flex-wrap:wrap;gap:10px;
+      margin-left:auto;
+    }
+    .links a{
+      text-decoration:none;
+      font-size:13px;
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:12px;
+    }
+    .links a:hover{background:rgba(255,255,255,.06);color:var(--text)}
+    .cta{
+      display:flex;align-items:center;gap:10px;margin-left:10px;
+    }
+    .pill{
+      font-size:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--muted);
+      padding:7px 10px;border-radius:999px;
+      display:flex;align-items:center;gap:8px;
+      white-space:nowrap;
+    }
+    .btn{
+      border:0;
+      background: linear-gradient(135deg, rgba(125,211,252,.95), rgba(167,243,208,.92));
+      color:#072033;
+      padding:10px 12px;
+      border-radius:14px;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:0 16px 40px rgba(0,0,0,.35);
+      white-space:nowrap;
+    }
+    .btn:hover{filter:brightness(1.05)}
+    .btn.secondary{
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border:1px solid var(--line);
+      box-shadow:none;
+      font-weight:700;
+    }
+    .hero{padding:34px 0 12px}
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(16,26,49,.92), rgba(16,26,49,.70));
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .heroMain{padding:22px}
+    .kicker{
+      display:inline-flex;gap:8px;align-items:center;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      font-size:12px;
+    }
+    .heroMain h2{margin:12px 0 8px;font-size:34px;line-height:1.1}
+    .heroMain p{margin:0;color:var(--muted);max-width:62ch}
+    .heroActions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .heroSide{padding:16px}
+    .mini{
+      display:flex;gap:12px;
+      padding:12px;border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      margin-bottom:10px;
+    }
+    .mini .dot{
+      width:38px;height:38px;border-radius:14px;
+      background:rgba(125,211,252,.20);
+      display:grid;place-items:center;
+      border:1px solid rgba(125,211,252,.28);
+    }
+    .mini h3{margin:0;font-size:14px}
+    .mini p{margin:4px 0 0;color:var(--muted);font-size:12px}
+    .section{padding:24px 0}
+    .section h3{margin:0 0 10px;font-size:20px}
+    .section p{margin:0;color:var(--muted)}
+    .toolbar{
+      display:flex;flex-wrap:wrap;gap:10px;
+      align-items:center;
+      padding:14px;
+      border-radius: 18px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+    }
+    .search{
+      flex:1;
+      min-width: 240px;
+      display:flex;gap:10px;align-items:center;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.18);
+      border-radius: 14px;
+      padding:10px 12px;
+      color:var(--muted);
+    }
+    .search input{
+      width:100%;
+      border:0;outline:0;
+      background:transparent;
+      color:var(--text);
+      font-size:14px;
+    }
+    select{
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.18);
+      color:var(--text);
+      padding:10px 12px;border-radius:14px;
+      outline:0;
+    }
+    .grid{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    .product{overflow:hidden}
+    .thumb{
+      height:170px;
+      border-bottom:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+    }
+    .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .pbody{padding:12px}
+    .tag{
+      display:inline-block;
+      font-size:11px;
+      color:var(--muted);
+      padding:4px 8px;border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+    }
+    .pname{margin:8px 0 6px;font-weight:800}
+    .pdesc{margin:0;color:var(--muted);font-size:13px;min-height:38px}
+    .prow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+    .price{font-weight:900}
+    .add{padding:9px 10px;border-radius:12px}
+    .twoCol{display:grid;grid-template-columns: 1fr 1fr; gap:14px}
+    .box{padding:16px}
+    .list{margin:10px 0 0;color:var(--muted);padding-left:18px}
+    .videoWrap{padding:16px}
+    .videoCard{
+      border:1px solid var(--line);
+      border-radius:18px;
+      overflow:hidden;
+      background:rgba(255,255,255,.03);
+    }
+    video{width:100%;display:block;background:#000}
+    .smallNote{margin:10px 0 0;color:var(--muted);font-size:12px}
+    .footer{
+      padding:26px 0 38px;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .modalBackdrop{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,.55);
+      display:none;
+      align-items:flex-end;
+      justify-content:center;
+      z-index:60;
+    }
+    .modal{
+      width:min(980px, 100%);
+      border-radius: 22px 22px 0 0;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(16,26,49,.96), rgba(16,26,49,.84));
+      box-shadow: var(--shadow);
+      padding:16px;
+      max-height: 85vh;
+      overflow:auto;
+    }
+    .modalHeader{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      padding-bottom:10px;border-bottom:1px solid var(--line);
+    }
+    .modalHeader h4{margin:0}
+    .close{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      padding:8px 10px;border-radius:12px;
+      cursor:pointer;
+    }
+    .cartGrid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    .cartItems, .checkout{
+      border:1px solid var(--line);
+      border-radius: 18px;
+      background:rgba(255,255,255,.03);
+      padding:12px;
+    }
+    .item{
+      display:grid;
+      grid-template-columns: 54px 1fr auto;
+      gap:10px;
+      align-items:center;
+      padding:10px 0;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .item:last-child{border-bottom:0}
+    .pic{
+      width:54px;height:54px;border-radius:14px;
+      overflow:hidden;border:1px solid rgba(255,255,255,.10);
+    }
+    .pic img{width:100%;height:100%;object-fit:cover}
+    .iname{margin:0;font-weight:800;font-size:14px}
+    .isub{margin:4px 0 0;color:var(--muted);font-size:12px}
+    .qty{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+    .qbtn{
+      width:30px;height:30px;border-radius:10px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      cursor:pointer;
+      font-weight:900;
+    }
+    .remove{border:0;background:transparent;color:var(--danger);cursor:pointer;font-size:12px;margin-left:8px}
+    .sumRow{display:flex;justify-content:space-between;gap:10px;margin:8px 0;color:var(--muted)}
+    .sumRow strong{color:var(--text)}
+    .field{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+    .field label{font-size:12px;color:var(--muted)}
+    .field input, .field textarea{
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.18);
+      color:var(--text);
+      padding:10px 12px;border-radius:14px;
+      outline:0;
+      font-family:inherit;
+    }
+    .radioRow{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+    .radioRow label{
+      display:flex;gap:10px;align-items:center;
+      padding:8px 10px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.14);
+      cursor:pointer;
+      color:var(--muted);
+    }
+    .radioRow input{accent-color: var(--accent)}
+    .checkoutActions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+
+    @media (max-width: 980px){
+      .heroGrid{grid-template-columns: 1fr}
+      .grid{grid-template-columns: repeat(2, 1fr)}
+      .twoCol{grid-template-columns: 1fr}
+      .cartGrid{grid-template-columns:1fr}
+      .brand{min-width:auto}
+    }
+    @media (max-width: 560px){
+      .grid{grid-template-columns: 1fr}
+      .links{display:none}
+      .heroMain h2{font-size:28px}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="container">
+      <div class="nav">
+        <a class="brand" href="#inicio" aria-label="NanoMarkET - inicio">
+          <img src="logo.png" alt="Logo NanoMarkET">
+          <div>
+            <h1>NanoMarkET</h1>
+            <p>Tienda & guardería para mascotas · Goya (Madrid)</p>
+          </div>
+        </a>
+
+        <div class="links">
+          <a href="#catalogo">Catálogo</a>
+          <a href="#video">Vídeo</a>
+          <a href="#pagos-envios">Pagos y envíos</a>
+          <a href="#quienes">Quiénes somos</a>
+          <a href="#contacto">Contacto</a>
+        </div>
+
+        <div class="cta">
+          <div class="pill" title="Contador de visitas (en este navegador)">
+            Visitas: <span id="visitas">0</span>
+          </div>
+          <button class="btn" id="openCartBtn" type="button">
+            Carrito (<span id="cartCount">0</span>)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero" id="inicio">
+    <div class="container">
+      <div class="heroGrid">
+        <div class="card heroMain">
+          <span class="kicker">Productos de calidad · Guardería segura · Atención cercana</span>
+          <h2>Todo lo que tu mascota necesita, en un solo lugar</h2>
+          <p>
+            NanoMarkET es una tienda especializada en Goya (Madrid) con catálogo de productos para mascotas,
+            servicio de guardería y asesoramiento. Esta web incluye buscador, carrito y opciones de pago/envío
+            en modo demostración.
+          </p>
+          <div class="heroActions">
+            <a class="btn" href="#catalogo">Ver catálogo</a>
+            <button class="btn secondary" type="button" id="scrollContact">Pedir información</button>
+          </div>
+        </div>
+
+        <div class="card heroSide">
+          <div class="mini">
+            <div class="dot">🛍️</div>
+            <div>
+              <h3>Catálogo realista</h3>
+              <p>Collares, correas, comida, higiene y juguetes.</p>
+            </div>
+          </div>
+          <div class="mini">
+            <div class="dot">🏡</div>
+            <div>
+              <h3>Guardería</h3>
+              <p>Espacio seguro con supervisión y rutinas.</p>
+            </div>
+          </div>
+          <div class="mini">
+            <div class="dot">🚚</div>
+            <div>
+              <h3>Envíos</h3>
+              <p>Recogida o envío 24/48h (según zona).</p>
+            </div>
+          </div>
+          <div class="mini">
+            <div class="dot">💳</div>
+            <div>
+              <h3>Pagos</h3>
+              <p>Bizum, tarjeta y transferencia.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="smallNote">
+        Nota: para el proyecto académico, el contador cuenta visitas en el navegador y el checkout es simulado.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" id="catalogo">
+    <div class="container">
+      <h3>Catálogo de productos</h3>
+      <p>Busca productos, filtra por categoría y añade al carrito.</p>
+
+      <div class="toolbar" style="margin-top:12px">
+        <div class="search">
+          🔎
+          <input id="searchInput" type="search" placeholder="Buscar por nombre, categoría o descripción..." />
+        </div>
+
+        <select id="categorySelect">
+          <option value="all">Todas las categorías</option>
+          <option value="Alimentación">Alimentación</option>
+          <option value="Accesorios">Accesorios</option>
+          <option value="Juguetes">Juguetes</option>
+          <option value="Higiene y salud">Higiene y salud</option>
+        </select>
+
+        <select id="sortSelect">
+          <option value="featured">Orden: destacados</option>
+          <option value="price-asc">Precio: menor a mayor</option>
+          <option value="price-desc">Precio: mayor a menor</option>
+          <option value="name-asc">Nombre: A-Z</option>
+        </select>
+      </div>
+
+      <div class="grid" id="productGrid"></div>
+    </div>
+  </div>
+
+  <div class="section" id="video">
+    <div class="container">
+      <h3>Vídeo de promoción</h3>
+      <p></p>
+
+      <div class="card videoWrap">
+        <div class="videoCard">
+          <video controls>
+            <source src="nano_video.mp4" type="video/mp4" />
+            Tu navegador no soporta vídeo HTML5.
+          </video>
+        </div>
+        <p class="smallNote">
+          Si no tenéis vídeo todavía, la web seguirá funcionando; simplemente no se reproducirá nada.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="pagos-envios">
+    <div class="container">
+      <h3>Medios de pago y métodos de envío</h3>
+      <p>Opciones claras para facilitar la compra y generar confianza.</p>
+
+      <div class="twoCol" style="margin-top:12px">
+        <div class="card box">
+          <h3 style="margin-top:0">Medios de pago</h3>
+          <ul class="list">
+            <li>Bizum</li>
+            <li>Tarjeta (crédito/débito)</li>
+            <li>Transferencia bancaria</li>
+          </ul>
+          <p class="smallNote">Se seleccionan en el checkout del carrito.</p>
+        </div>
+
+        <div class="card box">
+          <h3 style="margin-top:0">Métodos de envío</h3>
+          <ul class="list">
+            <li>Recogida en tienda (gratis)</li>
+            <li>Envío estándar 24/48h</li>
+            <li>Envío urgente Madrid</li>
+          </ul>
+          <p class="smallNote">Los costes se aplican en el carrito (simulado).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="quienes">
+    <div class="container">
+      <h3>Quiénes somos</h3>
+      <p>Proyecto emprendedor de Fernando Romero Lozano y Marcos Martínez Escobar.</p>
+
+      <div class="twoCol" style="margin-top:12px">
+        <div class="card box">
+          <h3 style="margin-top:0">Fernando Romero Lozano</h3>
+          <p style="color:var(--muted);margin-top:6px">
+            Perfil orientado al cuidado animal y la selección de productos. Formación en veterinaria y experiencia en clínica.
+          </p>
+        </div>
+        <div class="card box">
+          <h3 style="margin-top:0">Marcos Martínez Escobar</h3>
+          <p style="color:var(--muted);margin-top:6px">
+            Perfil orientado a la gestión económica y comercial. Formación en economía y experiencia en mercados financieros.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="contacto">
+    <div class="container">
+      <h3>Contacto</h3>
+      <p>Dirección, email y teléfono.</p>
+
+      <div class="twoCol" style="margin-top:12px">
+        <div class="card box">
+          <h3 style="margin-top:0">Datos de contacto</h3>
+          <ul class="list">
+            <li>Dirección: Calle del Duque de Sesto, Goya, Madrid</li>
+            <li>Email: nanomarket@correo.com</li>
+            <li>Teléfono: +34 600 000 000</li>
+            <li>Horario: L–S 10:00–14:00 / 17:00–20:30</li>
+          </ul>
+        </div>
+
+        <div class="card box">
+          <h3 style="margin-top:0">Formulario (demo)</h3>
+          <form id="contactForm">
+            <div class="field">
+              <label>Nombre</label>
+              <input required name="nombre" placeholder="Tu nombre" />
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <input required type="email" name="email" placeholder="tuemail@ejemplo.com" />
+            </div>
+            <div class="field">
+              <label>Mensaje</label>
+              <textarea required name="mensaje" rows="4" placeholder="Escribe tu consulta..."></textarea>
+            </div>
+            <div class="checkoutActions">
+              <button class="btn" type="submit">Enviar</button>
+              <button class="btn secondary" type="button" id="copyEmailBtn">Copiar email</button>
+            </div>
+            <p class="smallNote" id="contactMsg" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="container">
+      <p style="margin:0">
+        © <span id="year"></span> NanoMarkET. Web demo para proyecto académico.
+      </p>
+    </div>
+  </div>
+
+  <div class="modalBackdrop" id="modalBackdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="modalHeader">
+        <h4>Carrito de compras</h4>
+        <button class="close" id="closeCartBtn" type="button">Cerrar</button>
+      </div>
+
+      <div class="cartGrid">
+        <div class="cartItems">
+          <div id="cartItems"></div>
+          <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,.08);padding-top:10px">
+            <div class="sumRow"><span>Subtotal</span><strong id="subtotal">0,00 €</strong></div>
+            <div class="sumRow"><span>Envío</span><strong id="shippingCost">0,00 €</strong></div>
+            <div class="sumRow"><span>Total</span><strong id="total">0,00 €</strong></div>
+          </div>
+        </div>
+
+        <div class="checkout">
+          <h4 style="margin:0 0 10px">Checkout (simulado)</h4>
+
+          <div class="field">
+            <label>Nombre y apellidos</label>
+            <input id="buyerName" placeholder="Ej: Fernando Romero" />
+          </div>
+
+          <div class="field">
+            <label>Teléfono</label>
+            <input id="buyerPhone" placeholder="Ej: 600 000 000" />
+          </div>
+
+          <div class="field">
+            <label>Método de envío</label>
+            <div class="radioRow" id="shippingMethods">
+              <label><input type="radio" name="ship" value="pickup" checked /> Recogida en tienda (0 €)</label>
+              <label><input type="radio" name="ship" value="standard" /> Envío 24/48h (4,90 €)</label>
+              <label><input type="radio" name="ship" value="urgent" /> Envío urgente Madrid (7,90 €)</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Medio de pago</label>
+            <div class="radioRow" id="paymentMethods">
+              <label><input type="radio" name="pay" value="bizum" checked /> Bizum</label>
+              <label><input type="radio" name="pay" value="card" /> Tarjeta</label>
+              <label><input type="radio" name="pay" value="transfer" /> Transferencia</label>
+            </div>
+          </div>
+
+          <div class="checkoutActions">
+            <button class="btn" id="placeOrderBtn" type="button">Finalizar pedido</button>
+            <button class="btn secondary" id="clearCartBtn" type="button">Vaciar carrito</button>
+          </div>
+
+          <p class="smallNote" id="orderMsg" aria-live="polite"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const fmt = (n) => n.toLocaleString("es-ES",{style:"currency",currency:"EUR"});
+
+  const PRODUCTS = [
+  {
+    id: "p1",
+    name: "Pienso Premium (Salmón)",
+    category: "Alimentación",
+    price: 29.90,
+    desc: "Alimentación completa para perro adulto.",
+    img: "pienso.jpg"
+  },
+  {
+    id: "p2",
+    name: "Snacks Naturales",
+    category: "Alimentación",
+    price: 6.50,
+    desc: "Premios naturales para entrenamiento.",
+    img: "snacks.jpg"
+  },
+  {
+    id: "p3",
+    name: "Collar Ajustable",
+    category: "Accesorios",
+    price: 12.90,
+    desc: "Collar cómodo y resistente.",
+    img: "collar.jpg"
+  },
+  {
+    id: "p4",
+    name: "Correa Extensible",
+    category: "Accesorios",
+    price: 14.99,
+    desc: "Correa retráctil para paseos seguros.",
+    img: "correa.jpg"
+  },
+  {
+    id: "p5",
+    name: "Juguete Interactivo",
+    category: "Juguetes",
+    price: 14.90,
+    desc: "Estimulación mental y diversión.",
+    img: "juguete.jpg"
+  },
+  {
+    id: "p6",
+    name: "Champú Suave",
+    category: "Higiene y salud",
+    price: 9.90,
+    desc: "Champú para pieles sensibles.",
+    img: "champu.jpg"
+  }
+];
+
+
+
+    const storageKey = "nanomarket_cart_v2";
+    let cart = JSON.parse(localStorage.getItem(storageKey) || "{}");
+
+    const visitKey = "nanomarket_visits_v2";
+    const visits = (parseInt(localStorage.getItem(visitKey) || "0", 10) + 1);
+    localStorage.setItem(visitKey, String(visits));
+    document.getElementById("visitas").textContent = visits;
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const grid = document.getElementById("productGrid");
+    const searchInput = document.getElementById("searchInput");
+    const categorySelect = document.getElementById("categorySelect");
+    const sortSelect = document.getElementById("sortSelect");
+
+    function getCartCount(){
+      return Object.values(cart).reduce((a,b)=>a+b,0);
+    }
+    function saveCart(){
+      localStorage.setItem(storageKey, JSON.stringify(cart));
+      document.getElementById("cartCount").textContent = getCartCount();
+    }
+    function addToCart(id){
+      cart[id] = (cart[id] || 0) + 1;
+      saveCart();
+      renderCart();
+    }
+
+    function filteredProducts(){
+      const q = (searchInput.value || "").trim().toLowerCase();
+      const cat = categorySelect.value;
+      let items = PRODUCTS.filter(p=>{
+        const matchesQ = !q || (p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
+        const matchesCat = (cat === "all") || (p.category === cat);
+        return matchesQ && matchesCat;
+      });
+
+      const sort = sortSelect.value;
+      if(sort === "price-asc") items.sort((a,b)=>a.price-b.price);
+      if(sort === "price-desc") items.sort((a,b)=>b.price-a.price);
+      if(sort === "name-asc") items.sort((a,b)=>a.name.localeCompare(b.name));
+      return items;
+    }
+
+    function renderProducts(){
+      const items = filteredProducts();
+      if(items.length === 0){
+        grid.innerHTML = `<div class="card box" style="grid-column:1/-1">
+          No se han encontrado productos con esos filtros.
+        </div>`;
+        return;
+      }
+      grid.innerHTML = items.map(p=>`
+        <div class="card product">
+          <div class="thumb"><img alt="${p.name}" src="${p.img}"></div>
+          <div class="pbody">
+            <span class="tag">${p.category}</span>
+            <div class="pname">${p.name}</div>
+            <p class="pdesc">${p.desc}</p>
+            <div class="prow">
+              <div class="price">${fmt(p.price)}</div>
+              <button class="btn add" type="button" data-add="${p.id}">Añadir</button>
+            </div>
+          </div>
+        </div>
+      `).join("");
+
+      grid.querySelectorAll("[data-add]").forEach(btn=>{
+        btn.addEventListener("click", ()=> addToCart(btn.getAttribute("data-add")));
+      });
+    }
+
+    const modalBackdrop = document.getElementById("modalBackdrop");
+    const openCartBtn = document.getElementById("openCartBtn");
+    const closeCartBtn = document.getElementById("closeCartBtn");
+    const clearCartBtn = document.getElementById("clearCartBtn");
+    const cartItemsEl = document.getElementById("cartItems");
+    const subtotalEl = document.getElementById("subtotal");
+    const shippingEl = document.getElementById("shippingCost");
+    const totalEl = document.getElementById("total");
+    const orderMsg = document.getElementById("orderMsg");
+
+    function shippingCost(){
+      const sel = document.querySelector('input[name="ship"]:checked')?.value || "pickup";
+      if(sel === "standard") return 4.90;
+      if(sel === "urgent") return 7.90;
+      return 0;
+    }
+
+    function cartLines(){
+      const ids = Object.keys(cart);
+      return ids.map(id=>{
+        const p = PRODUCTS.find(x=>x.id===id);
+        const qty = cart[id];
+        return {p, qty, lineTotal: (p.price*qty)};
+      }).filter(x=>x.p);
+    }
+
+    function renderCart(){
+      const lines = cartLines();
+      if(lines.length === 0){
+        cartItemsEl.innerHTML = `<p style="color:var(--muted);margin:0">Tu carrito está vacío.</p>`;
+      }else{
+        cartItemsEl.innerHTML = lines.map(({p, qty})=>`
+          <div class="item">
+            <div class="pic"><img alt="${p.name}" src="${p.img}"></div>
+            <div>
+              <p class="iname">${p.name}</p>
+              <p class="isub">${p.category} · ${fmt(p.price)}</p>
+            </div>
+            <div class="qty">
+              <button class="qbtn" type="button" data-dec="${p.id}">−</button>
+              <div style="min-width:18px;text-align:center">${qty}</div>
+              <button class="qbtn" type="button" data-inc="${p.id}">+</button>
+              <button class="remove" type="button" data-remove="${p.id}">Eliminar</button>
+            </div>
+          </div>
+        `).join("");
+
+        cartItemsEl.querySelectorAll("[data-inc]").forEach(b=>{
+          b.addEventListener("click", ()=>{
+            const id = b.getAttribute("data-inc");
+            cart[id] = (cart[id]||0)+1;
+            saveCart(); renderCart();
+          });
+        });
+        cartItemsEl.querySelectorAll("[data-dec]").forEach(b=>{
+          b.addEventListener("click", ()=>{
+            const id = b.getAttribute("data-dec");
+            cart[id] = Math.max(0, (cart[id]||0)-1);
+            if(cart[id] === 0) delete cart[id];
+            saveCart(); renderCart();
+          });
+        });
+        cartItemsEl.querySelectorAll("[data-remove]").forEach(b=>{
+          b.addEventListener("click", ()=>{
+            const id = b.getAttribute("data-remove");
+            delete cart[id];
+            saveCart(); renderCart();
+          });
+        });
+      }
+
+      const sub = lines.reduce((a,x)=>a+x.lineTotal,0);
+      const ship = shippingCost();
+      subtotalEl.textContent = fmt(sub);
+      shippingEl.textContent = fmt(ship);
+      totalEl.textContent = fmt(sub + ship);
+      document.getElementById("cartCount").textContent = getCartCount();
+    }
+
+    function openCart(){
+      modalBackdrop.style.display = "flex";
+      orderMsg.textContent = "";
+      renderCart();
+    }
+    function closeCart(){
+      modalBackdrop.style.display = "none";
+    }
+
+    openCartBtn.addEventListener("click", openCart);
+    closeCartBtn.addEventListener("click", closeCart);
+    modalBackdrop.addEventListener("click", (e)=>{ if(e.target === modalBackdrop) closeCart(); });
+
+    clearCartBtn.addEventListener("click", ()=>{
+      cart = {};
+      saveCart();
+      renderCart();
+    });
+
+    document.getElementById("shippingMethods").addEventListener("change", ()=> renderCart());
+
+    document.getElementById("placeOrderBtn").addEventListener("click", ()=>{
+      const name = document.getElementById("buyerName").value.trim();
+      const phone = document.getElementById("buyerPhone").value.trim();
+      const pay = document.querySelector('input[name="pay"]:checked')?.value || "bizum";
+      const ship = document.querySelector('input[name="ship"]:checked')?.value || "pickup";
+
+      if(getCartCount() === 0){
+        orderMsg.textContent = "Añade algún producto al carrito antes de finalizar.";
+        return;
+      }
+      if(!name || !phone){
+        orderMsg.textContent = "Completa nombre y teléfono para finalizar (simulación).";
+        return;
+      }
+
+      const payText = (pay==="bizum")?"Bizum":(pay==="card")?"Tarjeta":"Transferencia";
+      const shipText = (ship==="pickup")?"Recogida en tienda":(ship==="standard")?"Envío 24/48h":"Envío urgente Madrid";
+
+      orderMsg.textContent = `Pedido registrado (simulado). Pago: ${payText}. Envío: ${shipText}. Gracias, ${name}.`;
+      cart = {};
+      saveCart();
+      renderCart();
+    });
+
+    document.getElementById("scrollContact").addEventListener("click", ()=>{
+      document.getElementById("contacto").scrollIntoView({behavior:"smooth"});
+    });
+
+    document.getElementById("copyEmailBtn").addEventListener("click", async ()=>{
+      try{
+        await navigator.clipboard.writeText("nanomarket@correo.com");
+        document.getElementById("contactMsg").textContent = "Email copiado.";
+      }catch{
+        document.getElementById("contactMsg").textContent = "No se pudo copiar. Copia manualmente: nanomarket@correo.com";
+      }
+    });
+
+    document.getElementById("contactForm").addEventListener("submit", (e)=>{
+      e.preventDefault();
+      document.getElementById("contactMsg").textContent = "Mensaje enviado (demo). En una web real llegaría al correo de la empresa.";
+      e.target.reset();
+    });
+
+    searchInput.addEventListener("input", renderProducts);
+    categorySelect.addEventListener("change", renderProducts);
+    sortSelect.addEventListener("change", renderProducts);
+
+    saveCart();
+    renderProducts();
+  </script>
+</body>
+</html>
